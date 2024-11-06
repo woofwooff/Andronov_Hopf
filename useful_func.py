@@ -2,15 +2,44 @@ import parameters
 from phase_line import PhaseLine
 
 
-epsilon = 0.5
-c = -2
+epsilon = 0
+c = 0
 scale_change_occurred = False
+parameter_change_occurred = False
 
 
 def dynamic_law1(x, y):
     dx = epsilon*x - y + c*x*(x**2 + y**2)
     dy = x + epsilon*y + c*y*(x**2 + y**2)
     return dx, dy
+
+
+def update_epsilon(new_value):
+    global parameter_change_occurred, epsilon
+    epsilon = float(new_value)
+    parameter_change_occurred = True
+
+
+def update_c(new_value):
+    global parameter_change_occurred, c
+    c = float(new_value)
+    parameter_change_occurred = True
+
+
+def get_epsilon_label_y():
+    epsilon_range = parameters.epsilon_upper - parameters.epsilon_lower
+    filled_fraction = (parameters.epsilon_upper - epsilon)/epsilon_range
+    y = (parameters.slider_boarder_gap + parameters.slider_bar_height*0.5 +
+         (parameters.slider_length - 1.5*parameters.slider_bar_height)*filled_fraction)
+    return y
+
+
+def get_c_label_y():
+    c_range = parameters.c_upper - parameters.c_lower
+    filled_fraction = (parameters.c_upper - c)/c_range
+    y = (parameters.slider_boarder_gap + parameters.slider_bar_height*0.5 +
+         (parameters.slider_length - 1.5*parameters.slider_bar_height)*filled_fraction)
+    return y
 
 
 def change_scale(event):
